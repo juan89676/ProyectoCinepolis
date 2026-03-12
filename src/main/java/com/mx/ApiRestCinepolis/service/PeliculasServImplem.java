@@ -24,25 +24,50 @@ public class PeliculasServImplem implements PeliculasServ{
 	@Override
 	public boolean guardarPeliculas(Peliculas pelicula) {
 		// TODO Auto-generated method stub
-		return false;
+		boolean bandera = false;
+		for(Peliculas p: mostrarPeliculas()) {
+			if(p.getNombre().equalsIgnoreCase(pelicula.getNombre())) {
+			bandera = true;
+			break;
+			}
+		}
+		if(!bandera)
+			peliculaDao.save(pelicula);
+		return bandera;
 	}
 
 	@Override
 	public Peliculas buscarPelicula(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+	Peliculas peliEncontrada = peliculaDao.findById(id).orElse(null);
+		return peliEncontrada;
 	}
 
 	@Override
 	public boolean editarPelicula(Peliculas peliculas) {
 		// TODO Auto-generated method stub
-		return false;
+		if(buscarPelicula(peliculas.getIdPelicula()) !=null) {
+			peliculaDao.save(peliculas);
+			return true;
+		}
+		else
+			return false;
+		
+	
 	}
 
 	@Override
 	public boolean eliminarPelicula(Integer id) {
 		// TODO Auto-generated method stub
-		return false;
+
+		if(buscarPelicula(id) != null) {
+			peliculaDao.deleteById(id);
+			return true;
+		}
+		else
+			return false;
+		
+	
 	}
 
 }
